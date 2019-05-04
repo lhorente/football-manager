@@ -30,7 +30,7 @@ Route::post('/clubs/edit/{id}', 'ClubsController@postEdit')->name('clubsPostEdit
 
 // Players
 Route::get('/players', 'PlayersController@index')->name('playersIndex'); // List all players
-Route::get('/players/{id}', 'PlayersController@view')->name('playersView'); // View player
+// Route::get('/players/{id}', 'PlayersController@view')->name('playersView'); // View player
 Route::get('/players/create', 'PlayersController@create')->name('playersCreate'); // create player form
 Route::get('/players/edit/{id}', 'PlayersController@edit')->name('playersEdit'); // edit player form
 Route::get('/players/remove/{id}', 'PlayersController@remove')->name('playersRemove'); // Remove player
