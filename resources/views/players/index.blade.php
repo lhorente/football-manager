@@ -28,7 +28,7 @@
 						<tr>
 							<td><?php echo $player->name ?></td>
 							<td><?php echo $player->birthdate ?></td>
-							<td><?php echo $player->club->name ?></td>
+							<td><?php echo $player->club ? $player->club->name : "" ?></td>
 							<td>
 								<a href="<?php echo url('players/edit/'.$player->id) ?>">Edit</a>
 							</td>
