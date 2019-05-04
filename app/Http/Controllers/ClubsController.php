@@ -38,6 +38,14 @@ class ClubsController extends Controller{
 	}
 	
 	public function remove(Request $request, $id){
+		$players = Player::where('club_id',$id)->count();
+		// var_dump($players);exit;
+		if ($players){
+			$request->session()->flash('message', 'Remove not allowed. First, remove the players.'); 
+			$request->session()->flash('alert-class', 'alert-danger');		
+			return redirect()->route('clubsIndex');
+		}
+		
 		$deleteRows = Club::where('id',$id)->delete();
 		if ($deleteRows){
 			$request->session()->flash('message', 'Success! Club removed.'); 
