@@ -115,6 +115,7 @@ class PlayersController extends Controller{
 	public function postExport(Request $request){
 		$data = $request->all();
 		
+		// If Club ID, return CSV
 		if ($data['club_id']){
 			header('Content-Type: text/csv');
 			header('Content-Disposition: attachment; filename="players.csv"');
@@ -127,21 +128,27 @@ class PlayersController extends Controller{
 			
 			if ($players){
 				foreach ($players as $player){
-					echo $player->name . ";";
+					echo utf8_decode($player->name) . ";";
 					echo $player->birthdate . ";";
-					echo $player->club->name . "\n";
+					echo $player->club ? utf8_decode($player->club->name) . "\n" : "" . "\n";
 				}
 			}
-		} else {
-			$xmlRequest = new XmlRequest;
-			$xmlRequest->email = "willian.lhorente@gmail.com";
-			if ($xmlRequest->save()){
-				$request->session()->flash('message', 'Success! You will receive the XML report on your email.'); 
-				$request->session()->flash('alert-class', 'alert-success');
-				return redirect()->route('playersExport');
+		} else { // If not Club ID, create XML Report to send by email.
+			if (isset($data['email']) && $data['email']){
+				$xmlRequest = new XmlRequest;
+				$xmlRequest->email = $data['email'];
+				if ($xmlRequest->save()){
+					$request->session()->flash('message', 'Success! You will receive the XML report on your email.'); 
+					$request->session()->flash('alert-class', 'alert-success');
+					return redirect()->route('playersExport');
+				} else {
+					$request->session()->flash('message', 'Error request XML, please try again.'); 
+					$request->session()->flash('alert-class', 'alert-error');
+					return redirect()->route('playersExport');
+				}
 			} else {
-				$request->session()->flash('message', 'Error request XML, please try again.'); 
-				$request->session()->flash('alert-class', 'alert-error');
+				$request->session()->flash('message', 'Invalid or empty email'); 
+				$request->session()->flash('alert-class', 'alert-danger');
 				return redirect()->route('playersExport');
 			}
 		}
