@@ -26,3 +26,6 @@ import fmanager.sql
 ```sql
 */1 * * * * /usr/bin/php /path-to-your-installation/artisan mail:xmlRequests
 ```
+
+# API
+You can manage clubs and player by API. Documentation: https://lhorente.com.br/labs/fmanager/apidoc
